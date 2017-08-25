@@ -1,0 +1,65 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Simple.Sample.Worker1", "Simple.Sample.Worker1\Simple.Sample.Worker1.xproj", "{31DF7F40-C10A-49C4-B3A4-C5C1CC7B5774}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Simple.Sample.Common", "Simple.Sample.Common\Simple.Sample.Common.xproj", "{E5572382-73B7-4690-9E24-D84C94B8C71A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SampleApplication", "SampleApplication", "{C1E3EBA8-D0A7-4B79-901C-2B3DF1CEFC5E}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Simple.esb", "Simple.esb\Simple.esb.xproj", "{B86EABFF-04D7-46D1-83E9-4A7A24415282}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Simple.esb.RabbitMQ", "Simple.esb.RabbitMQ\Simple.esb.RabbitMQ.xproj", "{F314F8F2-C2AA-4E71-9DB3-997E428FA6C3}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Simple.esb.Mongo", "Simple.esb.Mongo\Simple.esb.Mongo.xproj", "{3EE8C292-2F22-4B9A-8013-5A9B9BE02F27}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Simple.esb.AspNetMvc", "Simple.esb.AspNetMvc\Simple.esb.AspNetMvc.xproj", "{C599CA17-3DD0-46B8-9C5D-5166782B8851}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Simple.Sample.Web", "Simple.Sample.Web\Simple.Sample.Web.xproj", "{61E5338F-D4B7-4AFF-9708-17945BA4548E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{31DF7F40-C10A-49C4-B3A4-C5C1CC7B5774}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31DF7F40-C10A-49C4-B3A4-C5C1CC7B5774}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31DF7F40-C10A-49C4-B3A4-C5C1CC7B5774}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31DF7F40-C10A-49C4-B3A4-C5C1CC7B5774}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5572382-73B7-4690-9E24-D84C94B8C71A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5572382-73B7-4690-9E24-D84C94B8C71A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5572382-73B7-4690-9E24-D84C94B8C71A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5572382-73B7-4690-9E24-D84C94B8C71A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B86EABFF-04D7-46D1-83E9-4A7A24415282}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B86EABFF-04D7-46D1-83E9-4A7A24415282}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B86EABFF-04D7-46D1-83E9-4A7A24415282}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B86EABFF-04D7-46D1-83E9-4A7A24415282}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F314F8F2-C2AA-4E71-9DB3-997E428FA6C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F314F8F2-C2AA-4E71-9DB3-997E428FA6C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F314F8F2-C2AA-4E71-9DB3-997E428FA6C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F314F8F2-C2AA-4E71-9DB3-997E428FA6C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EE8C292-2F22-4B9A-8013-5A9B9BE02F27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EE8C292-2F22-4B9A-8013-5A9B9BE02F27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EE8C292-2F22-4B9A-8013-5A9B9BE02F27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EE8C292-2F22-4B9A-8013-5A9B9BE02F27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C599CA17-3DD0-46B8-9C5D-5166782B8851}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C599CA17-3DD0-46B8-9C5D-5166782B8851}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C599CA17-3DD0-46B8-9C5D-5166782B8851}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C599CA17-3DD0-46B8-9C5D-5166782B8851}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61E5338F-D4B7-4AFF-9708-17945BA4548E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61E5338F-D4B7-4AFF-9708-17945BA4548E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61E5338F-D4B7-4AFF-9708-17945BA4548E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61E5338F-D4B7-4AFF-9708-17945BA4548E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{31DF7F40-C10A-49C4-B3A4-C5C1CC7B5774} = {C1E3EBA8-D0A7-4B79-901C-2B3DF1CEFC5E}
+		{E5572382-73B7-4690-9E24-D84C94B8C71A} = {C1E3EBA8-D0A7-4B79-901C-2B3DF1CEFC5E}
+		{61E5338F-D4B7-4AFF-9708-17945BA4548E} = {C1E3EBA8-D0A7-4B79-901C-2B3DF1CEFC5E}
+	EndGlobalSection
+EndGlobal

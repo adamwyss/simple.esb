@@ -1,0 +1,10 @@
+#!/bin/bash
+
+rm -rf ./Packages
+
+OPTIONS="--configuration=Release --version-suffix=alpha1 --output ./Packages"
+
+dotnet pack Simple.esb/project.json $OPTIONS
+dotnet pack Simple.esb.AspNetMvc/project.json $OPTIONS
+dotnet pack Simple.esb.Mongo/project.json $OPTIONS
+dotnet pack Simple.esb.RabbitMQ/project.json $OPTIONS

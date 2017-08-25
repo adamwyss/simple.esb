@@ -1,0 +1,23 @@
+{
+  "version": "1.0.0-*",
+  "buildOptions": {
+    "emitEntryPoint": true
+  },
+
+  "dependencies": {
+    "Microsoft.Extensions.DependencyInjection": "1.0.0",
+    "Microsoft.NETCore.App": {
+      "type": "platform",
+      "version": "1.0.1"
+    },
+    "Simple.esb": "1.0.0-*",
+    "Simple.esb.Mongo": "1.0.0-*",
+    "Simple.esb.RabbitMQ": "1.0.0-*",
+    "Simple.Sample.Common": "1.0.0-*"  },
+
+  "frameworks": {
+    "netcoreapp1.0": {
+      "imports": "dnxcore50"
+    }
+  }
+}
