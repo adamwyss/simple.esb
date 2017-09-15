@@ -16,6 +16,11 @@ namespace simple.esb
         Task Handle(T message);
     }
 
+    public interface IHandleAnyException
+    {
+        void OnHandlerException(object message, Exception exception);
+    }
+
     public interface IHaveState<T>
     {
         T StateData { get; }
@@ -134,12 +139,15 @@ namespace simple.esb
 
 
 
-
+    public interface IPreviewMessage
+    {
+        void Peek(object message);
+    }
 
 
     public interface IHandlerProvider
     {
-        IEnumerable<object> GetHandlers(Type handlerType);
+        IEnumerable<object> GetHandlers(Type handlerType, object message);
     }
 
 }

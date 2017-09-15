@@ -40,16 +40,16 @@ namespace simple.esb.rabbitmq
 
     public class RabbitServiceBus : IServiceBus
     {
-        private RabbitMqOptions _options;
+        private RabbitClient _client;
 
-        public RabbitServiceBus(RabbitMqOptions options)
+        public RabbitServiceBus(RabbitClient client)
         {
-            _options = options;
+            _client = client;
         }
 
         public void Retry<T>(T message, TimeSpan delay)
         {
-            // hack - figure out how to do this with rabbitmq
+            // hack - figure out how to do this with rabbitmq ** doesnt appear possible out of box.
             Task.WaitAll(
                 Task.Delay(delay)
             );
@@ -59,73 +59,103 @@ namespace simple.esb.rabbitmq
 
         public void Send<T>(T message)
         {
-            var factory = new ConnectionFactory() { Uri = _options.Server };
-            using (var connection = factory.CreateConnection())
+            using (var channel = _client.Connection.CreateModel())
             {
-                using (var channel = connection.CreateModel())
-                {
-                    channel.QueueDeclare(queue: Server.QueueName,
-                                         durable: false,
-                                         exclusive: false,
-                                         autoDelete: false,
-                                         arguments: null);
+                channel.QueueDeclare(queue: Server.QueueName,
+                                             durable: true,
+                                             exclusive: false,
+                                             autoDelete: false,
+                                             arguments: null);
 
-                    var routingKey = Server.RoutingKey;
+                var routingKey = Server.RoutingKey;
 
-                    var envelope = Envelope.Enclose(message);
-                    var serializedData = JsonConvert.SerializeObject(envelope);
-                    var body = Encoding.UTF8.GetBytes(serializedData);
-                    
-                    channel.BasicPublish(exchange: "",
-                                         routingKey: routingKey,
-                                         basicProperties: null,
-                                         body: body);
-                }
+                var envelope = Envelope.Enclose(message);
+                var serializedData = JsonConvert.SerializeObject(envelope);
+                var body = Encoding.UTF8.GetBytes(serializedData);
+
+                var properties = channel.CreateBasicProperties();
+                properties.Persistent = true;
+
+                channel.BasicPublish(exchange: "",
+                                     routingKey: routingKey,
+                                     basicProperties: properties,
+                                     body: body);
             }
         }
 
 
     }
 
-    public class Server : IStartupSegment
+    public class RabbitClient : IDisposable
+    {
+        private RabbitMqOptions _options;
+
+        public RabbitClient(RabbitMqOptions options)
+        {
+            _options = options;
+            Initialize();
+        }
+
+        public IConnection Connection { get; set; }
+        
+        public void Dispose()
+        {
+            Connection?.Dispose();
+        }
+
+        public IModel CreateChannel()
+        {
+            return Connection.CreateModel();
+        }
+
+        private void Initialize()
+        {
+            var factory = new ConnectionFactory()
+            {
+                Uri = _options.Server,
+                AutomaticRecoveryEnabled = true
+            };
+
+            Connection = factory.CreateConnection();
+        }
+    }
+
+    public class Server : IStartupSegment, IDisposable
     {
         public const string QueueName = "hello2";
 
         public const string RoutingKey = "hello2";
 
-        private readonly IServiceProvider _provider;
-        private readonly IHandlerProvider _provider2;
-        private readonly IDataStore _dataStore;
-        private readonly RabbitMqOptions _options;
+        private readonly IServiceProvider _services;
+        private readonly RabbitClient _client;
 
-        private IConnection _connection;
         private IModel _channel;
 
-        public Server(IServiceProvider provider, IHandlerProvider provider2, IDataStore dataStore, RabbitMqOptions options)
+        public Server(IServiceProvider services, RabbitClient client)
         {
-            _provider = provider;
-            _provider2 = provider2;
-            _dataStore = dataStore;
-            _options = options;
+            _services = services;
+            _client = client;
+        }
+
+        public void Dispose()
+        {
+            _channel.Dispose();
         }
 
         public void Start()
         {
-            var factory = new ConnectionFactory() { Uri = _options.Server };
-            _connection = factory.CreateConnection();
-            _channel = _connection.CreateModel();
-
+            _channel = _client.CreateChannel();
             _channel.QueueDeclare(queue: QueueName,
-                                    durable: false,
-                                    exclusive: false,
-                                    autoDelete: false,
-                                    arguments: null);
+                                  durable: true,
+                                  exclusive: false,
+                                  autoDelete: false,
+                                  arguments: null);
                     
             var consumer = new EventingBasicConsumer(_channel);
             consumer.Received += MessageReceived;
             _channel.BasicConsume(queue: QueueName,
-                                    noAck: true,
-                                    consumer: consumer);
+                                  noAck: false,
+                                  consumer: consumer);
         }
 
         private int _active = 0;
@@ -155,7 +185,7 @@ namespace simple.esb.rabbitmq
             }
             finally
             {
-                // _channel.BasicAck(e.DeliveryTag, false);
+                _channel.BasicAck(e.DeliveryTag, false);
             }
         }
 
@@ -170,7 +200,12 @@ namespace simple.esb.rabbitmq
 
             Console.WriteLine("[{0,3}] Received {1}.\n    {2}", _active, messageObject.GetType().Name, envelope.SerializedData);
 
-            var router = new MessageRouter(_provider, _provider2, _dataStore);
+            var router = _services.GetService(typeof(MessageRouter)) as MessageRouter;
+            if (router == null)
+            {
+                throw new InvalidOperationException("Message router not registered in IOC.");
+            }
+
             Stopwatch timer = new Stopwatch();
             timer.Start();
             await router.RouteToHandlers(messageObject);

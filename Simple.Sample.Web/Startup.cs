@@ -34,7 +34,7 @@ namespace Simple.Sample.Web
             services.AddSimpleEsb(b =>
             {
                 b.UseRabbitMq("amqp://guest@192.168.1.111:5672")
-                 .UseMongoDb("mongodb://192.168.1.111:27017", "simple_esb", "Data_State_Storage")
+                 .UseMongoDb("mongodb://192.168.1.111:27017", "simple_esb")
                  .RegisterHandlers(typeof(Startup).GetTypeInfo().Assembly);
             });
 

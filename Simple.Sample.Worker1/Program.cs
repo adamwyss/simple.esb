@@ -13,7 +13,7 @@ namespace Worker
             simple.esb.mongo.MongoHelper.Register<ImportData>();
 
             var host = new SimpleEsbBuilder()
-                .UseMongoDb("mongodb://192.168.1.111:27017", "simple_esb", "Data_State_Storage")
+                .UseMongoDb("mongodb://192.168.1.111:27017", "simple_esb")
                 .UseRabbitMq("amqp://guest@192.168.1.111:5672")
                 .RegisterHandlers(typeof(Program).GetTypeInfo().Assembly)
                 .BlocksWhileRunning()

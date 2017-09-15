@@ -2,7 +2,7 @@
 
 rm -rf ./Packages
 
-OPTIONS="--configuration=Release --version-suffix=alpha1 --output ./Packages"
+OPTIONS="--configuration=Release --version-suffix=alpha2--output ./Packages"
 
 dotnet pack Simple.esb/project.json $OPTIONS
 dotnet pack Simple.esb.AspNetMvc/project.json $OPTIONS

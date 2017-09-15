@@ -1,11 +1,9 @@
 ﻿using System;
 using MongoDB.Driver;
-using System.Collections.Generic;
 using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization;
-using simple.esb;
 using System.Threading.Tasks;
 
 namespace simple.esb.mongo
@@ -117,7 +115,7 @@ namespace simple.esb.mongo
         {
             IMongoClient c = new MongoClient(_options.Host);
             IMongoDatabase db = c.GetDatabase(_options.Database);
-            var collection = db.GetCollection<SagaData>(_options.Collection);
+            var collection = db.GetCollection<SagaData>("Sagas");
 
             return collection;
         }
@@ -126,7 +124,7 @@ namespace simple.esb.mongo
         {
             IMongoClient c = new MongoClient(_options.Host);
             IMongoDatabase db = c.GetDatabase(_options.Database);
-            var collection = db.GetCollection<LockInfo>(_options.Collection + "Locks");
+            var collection = db.GetCollection<LockInfo>("SagaLocks");
 
             return collection;
         }

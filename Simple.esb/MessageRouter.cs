@@ -11,14 +11,14 @@ namespace simple.esb
     {
         private static readonly Dictionary<Type, Dictionary<Type, DataLookupInfo>> _stateMappingInfo = new Dictionary<Type, Dictionary<Type, DataLookupInfo>>();
 
-        private readonly IServiceProvider _serviceProvider;
-        private readonly IHandlerProvider _provider2;
+        private readonly IServiceProvider _services;
+        private readonly IHandlerProvider _handlers;
         private readonly IDataStore _dataStore;
 
-        public MessageRouter(IServiceProvider provider, IHandlerProvider provider2, IDataStore store)
+        public MessageRouter(IServiceProvider services, IHandlerProvider handlers, IDataStore store)
         {
-            _serviceProvider = provider;
-            _provider2 = provider2;
+            _services = services;
+            _handlers = handlers;
             _dataStore = store;
         }
 
@@ -31,7 +31,7 @@ namespace simple.esb
             MethodInfo method = messageHandler.GetMethods().SingleOrDefault(m => ForHandleMethodForType(m, messageType));
             if (method != null)
             {
-                var list = _provider2.GetHandlers(messageHandler);      
+                var list = _handlers.GetHandlers(messageHandler, messageObject);      
                 foreach (var handler in list)
                 {
                     await InvokeHandle(handler, method, messageObject);
@@ -55,12 +55,20 @@ namespace simple.esb
                 try
                 {
                     await (Task)method.Invoke(handler, new object[] { message });
-
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine("HANDLER CRASHED WITH EXCEPTION: {0}", ex);
-                    // TODO: call unhandled exception handler.
+
+                    var exceptionHandler = handler as IHandleAnyException;
+                    if (exceptionHandler != null)
+                    {
+                        exceptionHandler.OnHandlerException(message, ex);
+                    }
+                    else
+                    {
+                        // TODO: call unhandled exception handler.
+                    }
                 }
 
                 so.SaveToStore();

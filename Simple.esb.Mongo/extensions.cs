@@ -5,9 +5,9 @@ namespace simple.esb
 {
     public static class SimpleEsbBuilderExtensions
     {
-        public static SimpleEsbBuilder UseMongoDb(this SimpleEsbBuilder builder, string server, string database, string collection)
+        public static SimpleEsbBuilder UseMongoDb(this SimpleEsbBuilder builder, string server, string database)
         {
-            builder.Services.AddSingleton<MongoOptions>(p => new MongoOptions { Host = server, Database = database, Collection = collection });
+            builder.Services.AddSingleton<MongoOptions>(p => new MongoOptions { Host = server, Database = database });
             builder.Services.AddSingleton<IDataStore, MongoDoHickey>();
 
             return builder;
@@ -18,6 +18,5 @@ namespace simple.esb
     {
         public string Host { get; set; }
         public string Database { get; set; }
-        public string Collection { get; set; }
     }
 }

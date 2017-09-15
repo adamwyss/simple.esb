@@ -30,6 +30,7 @@ namespace simple.esb
         private void ConfigureServices()
         {
             _collection.AddSingleton<IHandlerProvider, ServiceHandlerProvider>();
+            _collection.AddTransient<MessageRouter>();
         }
 
         public SimpleEsbBuilder BlocksWhileRunning()

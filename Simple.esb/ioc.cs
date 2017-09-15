@@ -15,12 +15,20 @@ namespace simple.esb.dependencyinjection
             _provider = provider;
         }
 
-        public IEnumerable<object> GetHandlers(Type handlerType)
+        public IEnumerable<object> GetHandlers(Type handlerType, object message)
         {
             IServiceScopeFactory factory = _provider.GetRequiredService<IServiceScopeFactory>();
             using (var scope = factory.CreateScope())
             {
-                return scope.ServiceProvider.GetServices(handlerType);
+                var scopedServices = scope.ServiceProvider;
+
+                var previewActions = scopedServices.GetServices<IPreviewMessage>();
+                foreach (var action in previewActions)
+                {
+                    action.Peek(message);
+                }
+
+                return scopedServices.GetServices(handlerType);
             }
         }
     }
