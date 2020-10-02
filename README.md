@@ -6,7 +6,7 @@ I do need a better name.
 
 ## Getting Started
 
-###Console App
+### Console App
 
 Add to Program.cs
 
@@ -73,7 +73,7 @@ public class MyHandler : IHandle<MyMessage>
             // perform any custom logic here.
         }
 }
-
+```
 
 ### Sagas and long running tasks
 
